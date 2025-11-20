@@ -1,0 +1,83 @@
+<style>
+  .address-box {
+    font-family: IRANSans, Vazirmatn, 'Segoe UI', Tahoma, sans-serif;
+    color: #1f2937;
+    max-width: 100%;
+  }
+
+  .address-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+  }
+
+  .address-icon {
+    flex: 0 0 28px;
+    height: 28px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .address-text {
+    line-height: 1.9;
+    flex: 1;
+    min-width: 200px;
+    text-align: right; /* دسکتاپ راست‌چین */
+  }
+
+  .address-label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 6px;
+    color: #f5b901; /* رنگ برند */
+  }
+
+  .address-text a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* 📱 حالت موبایل */
+  @media (max-width: 600px) {
+    .address-container {
+      flex-direction: column;
+      align-items: center;   /* آیکون وسط */
+      text-align: center;    /* متن وسط */
+    }
+
+    .address-icon {
+      margin-bottom: 8px;
+    }
+
+    .address-label {
+      font-size: 14px;
+      display: inline-block;
+      margin-left: 4px;
+    }
+
+    .address-text {
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: center;    /* متن وسط */
+    }
+  }
+</style>
+
+<div class="address-box" dir="rtl">
+  <div class="address-container">
+    <div class="address-icon">📍</div>
+    <div class="address-text">
+      <span class="address-label">آدرس:</span>
+      بازار آهن شادآباد، بلوار طاووس<br>
+      بلوک ۱۰ شمالی، پلاک ۴۵۵
+    </div>
+  </div>
+</div>

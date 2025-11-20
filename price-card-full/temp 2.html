@@ -1,0 +1,83 @@
+<!-- .gray-400.m-0.name {display: none !important;} -->
+
+
+
+
+
+
+
+
+/* ===== افکت اختصاصی برای ویجت تصویر فروشگاه ===== */
+
+/* فقط اولین ویجت تصویر در ستون راست را هدف می‌گیرد */
+.elementor-widget-image:nth-of-type(1) img {
+    border-radius: 11px;
+    padding: 4px;
+    background: linear-gradient(135deg, #ffcc00 0%, #ffc700 40%, #ffe066 100%);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-sizing: border-box;
+}
+
+/* افکت هاور */
+.elementor-widget-image:nth-of-type(1):hover img {
+    transform: scale(1.1);
+    box-shadow: 0 18px 30px rgba(0,0,0,0.24);
+}
+
+/* نور پس‌زمینه */
+.elementor-widget-image:nth-of-type(1) {
+    position: relative;
+}
+
+.elementor-widget-image:nth-of-type(1)::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -30px;
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(rgba(255,255,255,0.4), rgba(255,204,0,0));
+    border-radius: 50%;
+    filter: blur(25px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.elementor-widget-image:nth-of-type(1) img {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== پایان ===== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

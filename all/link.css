@@ -1,0 +1,5 @@
+.product-thumbnail a {cursor: pointer !important;display: block;position: relative;z-index: 2;}
+
+.product-thumbnail a img {pointer-events: auto !important;}
+
+.product-thumbnail svg {pointer-events: none !important;z-index: 1;}

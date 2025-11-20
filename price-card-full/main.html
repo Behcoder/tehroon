@@ -1,0 +1,692 @@
+<style>
+.cards-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  font-family: sans-serif;
+  direction: rtl;
+  text-align: center;
+}
+.product-card {
+  width: 140px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: background 0.3s, color 0.3s;
+  padding: 10px;
+}
+.product-card:hover,
+.product-card.active {
+  background: #f5b901;
+}
+.product-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: transform 0.3s;
+}
+.product-card:hover img,
+.product-card.active img {
+  transform: scale(1.05);
+}
+.product-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 6px 0;
+  color: #333;
+  transition: color 0.3s;
+}
+.product-card:hover h3,
+.product-card.active h3 {
+  color: #fff;
+}
+
+.pt-panel {
+  display: none;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.pt-panel.active {
+  display: block;
+}
+.pt-header {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.pt-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+}
+.pt-image-wrap {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* جدول */
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  direction: rtl;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+thead {
+  background-color: #000;
+  color: #fff;
+}
+tbody tr:nth-child(odd) {
+  background-color: #F5B901;
+  color: #000;
+}
+tbody tr:nth-child(even) {
+  background-color: #D9D9D9;
+  color: #333;
+}
+
+/* کلاس‌های ستون‌ها */
+.table-header th { text-align: center; }
+.col-product { text-align: right; width: 25%; }
+.col-size    { text-align: center; width: 10%; }
+.col-thick   { text-align: center; width: 15%; }
+.col-unit    { text-align: center; width: 10%; }
+.col-weight  { text-align: center; width: 15%; }
+.col-price   { text-align: left; padding-left: 12px; width: 25%; }
+
+/* برندها — خارج از مدیا کوئری */
+.brand-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.brand-btn {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.brand-btn.active {
+  background: #f5b901;
+  color: #000;
+  font-weight: bold;
+}
+.brand-table {
+  display: none;
+}
+.brand-table.active {
+  display: block;
+}
+
+/* واکنش‌گرایی برای موبایل و تبلت */
+@media screen and (max-width: 768px) {
+  .product-card img {
+    display: none;
+  }
+  .product-card h3 {
+    font-size: 12px;
+    margin: 4px 0;
+    line-height: 1.4;
+  }
+  .cards-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  table {
+    font-size: 13px;
+  }
+  th, td {
+    padding: 6px;
+    white-space: nowrap;
+  }
+  .pt-panel {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+}
+</style>
+
+<script>
+function showPanel(id, cardElement) {
+  // نمایش پنل انتخاب‌شده
+  document.querySelectorAll('.pt-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(id);
+  panel.classList.add('active');
+
+  // تغییر وضعیت کارت‌ها
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('active'));
+  if (cardElement) cardElement.classList.add('active');
+
+  // فعال‌سازی اولین برند به‌صورت پیش‌فرض
+  const firstBrandBtn = panel.querySelector('.brand-btn');
+  const firstBrandTable = panel.querySelector('.brand-table');
+  if (firstBrandBtn && firstBrandTable) {
+    panel.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+    panel.querySelectorAll('.brand-table').forEach(t => t.classList.remove('active'));
+    firstBrandBtn.classList.add('active');
+    firstBrandTable.classList.add('active');
+  }
+}
+
+function showBrand(id, btn) {
+  const panel = btn.closest('.pt-panel');
+  panel.querySelectorAll('.brand-table').forEach(el => el.classList.remove('active'));
+  panel.querySelector('#' + id).classList.add('active');
+  panel.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// وقتی صفحه لود میشه، اولین کارت و اولین برند رو فعال کن
+document.addEventListener("DOMContentLoaded", function() {
+  const firstCard = document.querySelector('.product-card');
+  if (firstCard) {
+    showPanel(firstCard.getAttribute('onclick').match(/'(.*?)'/)[1], firstCard);
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="cards-grid">
+  <div class="product-card" onclick="showPanel('pt-1', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/black-pipe.png" alt="لوله صنعتی">
+    <h3>لوله صنعتی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-2', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/steel-pipe-folad-market.png" alt="لوله گازی API">
+    <h3>لوله گازی API</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-3', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2024/07/Group-17910.png" alt="لوله شوفاژی">
+    <h3>لوله شوفاژی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-4', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/steel-pipe-folad-market.png" alt="لوله گازی معمولی">
+    <h3>لوله گازی معمولی</h3>
+  </div>
+  <div class="product-card active" onclick="showPanel('pt-5', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2024/07/Group-17910.png" alt="لوله گازی">
+    <h3>لوله گازی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-6', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/black-pipe.png" alt="محصولات جدید">
+    <h3>به زودی</h3>
+  </div>
+</div>
+
+<!-- پنل pt-1: لوله صنعتی با سه برند کامل -->
+<div class="pt-panel active" id="pt-1">
+  <div class="pt-header">
+    <div class="pt-title">لوله صنعتی</div>
+  </div>
+
+  <div class="brand-selector">
+    <button onclick="showBrand('industrial-sepahan', this)" class="brand-btn active">سپاهان</button>
+    <button onclick="showBrand('industrial-ahvaz', this)" class="brand-btn">اهواز</button>
+    <button onclick="showBrand('industrial-saveh', this)" class="brand-btn">ساوه</button>
+  </div>
+
+  <div class="pt-image-wrap">
+    <!-- سپاهان -->
+    <div class="brand-table active" id="industrial-sepahan">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 صنعتی سپاهان</td><td class="col-size">1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">6/7</td><td class="col-price">4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 صنعتی سپاهان</td><td class="col-size">3/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">8/8</td><td class="col-price">5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 صنعتی سپاهان</td><td class="col-size">1</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">13/3</td><td class="col-price">8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 صنعتی سپاهان</td><td class="col-size">1 1/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">16/8</td><td class="col-price">10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 صنعتی سپاهان</td><td class="col-size">1 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">19/1</td><td class="col-price">11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 صنعتی سپاهان</td><td class="col-size">2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">-</td><td class="col-price">-</td></tr>
+            <tr><td class="col-product">لوله 7 صنعتی سپاهان</td><td class="col-size">2 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">31</td><td class="col-price">17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 صنعتی سپاهان</td><td class="col-size">3</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">36</td><td class="col-price">20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 صنعتی سپاهان</td><td class="col-size">4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">46</td><td class="col-price">25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- اهواز -->
+    <div class="brand-table" id="industrial-ahvaz">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 صنعتی اهواز</td><td class="col-size">1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">6/7</td><td class="col-price">4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 صنعتی اهواز</td><td class="col-size">3/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">8/8</td><td class="col-price">5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 صنعتی اهواز</td><td class="col-size">1</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">13/3</td><td class="col-price">8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 صنعتی اهواز</td><td class="col-size">1 1/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">16/8</td><td class="col-price">10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 صنعتی اهواز</td><td class="col-size">1 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">19/1</td><td class="col-price">11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 صنعتی اهواز</td><td class="col-size">2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">-</td><td class="col-price">-</td></tr>
+            <tr><td class="col-product">لوله 7 صنعتی اهواز</td><td class="col-size">2 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">31</td><td class="col-price">17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 صنعتی اهواز</td><td class="col-size">3</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">36</td><td class="col-price">20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 صنعتی اهواز</td><td class="col-size">4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">46</td><td class="col-price">25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ساوه -->
+    <div class="brand-table" id="industrial-saveh">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 صنعتی ساوه</td><td class="col-size">1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">6/7</td><td class="col-price">4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 صنعتی ساوه</td><td class="col-size">3/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">8/8</td><td class="col-price">5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 صنعتی ساوه</td><td class="col-size">1</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">13/3</td><td class="col-price">8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 صنعتی ساوه</td><td class="col-size">1 1/4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">16/8</td><td class="col-price">10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 صنعتی ساوه</td><td class="col-size">1 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">19/1</td><td class="col-price">11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 صنعتی ساوه</td><td class="col-size">2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">-</td><td class="col-price">-</td></tr>
+            <tr><td class="col-product">لوله 7 صنعتی ساوه</td><td class="col-size">2 1/2</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">31</td><td class="col-price">17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 صنعتی ساوه</td><td class="col-size">3</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">36</td><td class="col-price">20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 صنعتی ساوه</td><td class="col-size">4</td><td class="col-thick">سبک</td><td class="col-unit">شاخه</td><td class="col-weight">46</td><td class="col-price">25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+<div class="pt-panel" id="pt-2">
+  <div class="pt-header">
+    <div class="pt-title">لوله گازی API</div>
+  </div>
+
+  <!-- دکمه‌های برند -->
+  <div class="brand-selector">
+    <button onclick="showBrand('api-sepahan', this)" class="brand-btn active">سپاهان</button>
+    <button onclick="showBrand('api-ahvaz', this)" class="brand-btn">اهواز</button>
+    <button onclick="showBrand('api-saveh', this)" class="brand-btn">ساوه</button>
+  </div>
+
+  <div class="pt-image-wrap">
+    <!-- برند سپاهان -->
+    <div class="brand-table active" id="api-sepahan">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی API سپاهان</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی API سپاهان</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی API سپاهان</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی API سپاهان</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی API سپاهان</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی API سپاهان</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی API سپاهان</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی API سپاهان</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی API سپاهان</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- برند اهواز -->
+    <div class="brand-table" id="api-ahvaz">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی API اهواز</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی API اهواز</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی API اهواز</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی API اهواز</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی API اهواز</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی API اهواز</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی API اهواز</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی API اهواز</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی API اهواز</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<!-- برند ساوه -->
+    <div class="brand-table" id="api-saveh">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی API ساوه</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی API ساوه</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی API ساوه</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی API ساوه</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی API ساوه</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی API ساوه</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی API ساوه</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی API ساوه</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی API ساوه</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="pt-panel" id="pt-3">
+  <div class="pt-header">
+    <div class="pt-title">لوله گازی شوفاژی</div>
+  </div>
+
+  <!-- دکمه‌های برند -->
+  <div class="brand-selector">
+    <button onclick="showBrand('shouf-sepahan', this)" class="brand-btn active">سپاهان</button>
+    <button onclick="showBrand('shouf-ahvaz', this)" class="brand-btn">اهواز</button>
+    <button onclick="showBrand('shouf-saveh', this)" class="brand-btn">ساوه</button>
+  </div>
+
+  <div class="pt-image-wrap">
+    <!-- برند سپاهان -->
+    <div class="brand-table active" id="api-sepahan">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی شوفازی سپاهان</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی سپاهان</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی سپاهان</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی سپاهان</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی سپاهان</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی سپاهان</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازی سپاهان</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی سپاهان</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی سپاهان</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- برند اهواز -->
+    <div class="brand-table" id="shouf-ahvaz">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی شوفازی اهواز</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی اهواز</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی اهواز</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی اهواز</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی اهواز</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی اهواز</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازیشوفازی اهواز</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی اهواز</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی اهواز</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<!-- برند ساوه -->
+    <div class="brand-table" id="shouf-saveh">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی شوفازی ساوه</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی ساوه</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی ساوه</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی ساوه</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی ساوه</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی ساوه</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازی ساوه</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی ساوه</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی ساوه</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="pt-panel" id="pt-4">
+  <div class="pt-header">
+    <div class="pt-title">لوله گازی معمولی</div>
+  </div>
+
+  <!-- دکمه‌های برند -->
+  <div class="brand-selector">
+    <button onclick="showBrand('shouf-sepahan', this)" class="brand-btn active">سپاهان</button>
+    <button onclick="showBrand('shouf-ahvaz', this)" class="brand-btn">اهواز</button>
+    <button onclick="showBrand('shouf-saveh', this)" class="brand-btn">ساوه</button>
+  </div>
+
+  <div class="pt-image-wrap">
+    <!-- برند سپاهان -->
+    <div class="brand-table active" id="api-sepahan">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی معمولی سپاهان</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی سپاهان</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی سپاهان</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی سپاهان</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی سپاهان</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی سپاهان</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازی سپاهان</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی سپاهان</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی سپاهان</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- برند اهواز -->
+    <div class="brand-table" id="shouf-ahvaz">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی شوفازی اهواز</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی اهواز</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی اهواز</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی اهواز</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی اهواز</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی اهواز</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازیشوفازی اهواز</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی اهواز</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی اهواز</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<!-- برند ساوه -->
+    <div class="brand-table" id="shouf-saveh">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr class="table-header">
+              <th class="col-product">نام محصول</th>
+              <th class="col-size">سایز (اینچ)</th>
+              <th class="col-thick">ضخامت (میلیمتر)</th>
+              <th class="col-unit">واحد</th>
+              <th class="col-weight">وزن (کیلوگرم)</th>
+              <th class="col-price">قیمت شاخه (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="col-product">لوله 2 گازی شوفازی ساوه</td><td>1/2</td><td>سبک</td><td>شاخه</td><td>6/7</td><td>4,053,500</td></tr>
+            <tr><td class="col-product">لوله 2/5 گازی شوفازی ساوه</td><td>3/4</td><td>سبک</td><td>شاخه</td><td>8/8</td><td>5,142,500</td></tr>
+            <tr><td class="col-product">لوله 3 گازی شوفازی ساوه</td><td>1</td><td>سبک</td><td>شاخه</td><td>13/3</td><td>8,192,800</td></tr>
+            <tr><td class="col-product">لوله 4 گازی شوفازی ساوه</td><td>1 1/4</td><td>سبک</td><td>شاخه</td><td>16/8</td><td>10,348,800</td></tr>
+            <tr><td class="col-product">لوله 5 گازی شوفازی ساوه</td><td>1 1/2</td><td>سبک</td><td>شاخه</td><td>19/1</td><td>11,765,600</td></tr>
+            <tr><td class="col-product">لوله 6 گازی شوفازی ساوه</td><td>2</td><td>سبک</td><td>شاخه</td><td>-</td><td>-</td></tr>
+            <tr><td class="col-product">لوله 7 گازی شوفازی ساوه</td><td>2 1/2</td><td>سبک</td><td>شاخه</td><td>31</td><td>17,254,600</td></tr>
+            <tr><td class="col-product">لوله 8 گازی شوفازی ساوه</td><td>3</td><td>سبک</td><td>شاخه</td><td>36</td><td>20,037,600</td></tr>
+            <tr><td class="col-product">لوله 10 گازی شوفازی ساوه</td><td>4</td><td>سبک</td><td>شاخه</td><td>46</td><td>25,603,600</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="pt-panel active" id="pt-5">
+  <div class="pt-header">
+    <div class="pt-title">لوله گازی</div>
+  </div>
+
+
+<div class="pt-panel" id="pt-6">
+  <div class="pt-image-wrap">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/1-1.webp" alt="به زودی">
+  </div>
+</div>

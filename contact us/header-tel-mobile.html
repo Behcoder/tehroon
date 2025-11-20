@@ -1,0 +1,101 @@
+<style>
+  .header-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+    font-family: IRANSans, Vazirmatn, sans-serif;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 400px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    padding: 4px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .mobile-title, .phone-title {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .mobile-number, .phone-number {
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+  }
+
+  .prefix-mobile, .prefix-phone {
+    color: rgb(76, 76, 85);
+    font-weight: bold;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+  }
+
+  .contact-item:hover .contact-icon {
+    transform: scale(1.4);
+  }
+
+  .contact-item:hover .mobile-number {
+    color: darkred;
+  }
+
+  .contact-item:hover .phone-number {
+    color: darkblue;
+  }
+
+  .contact-item:hover {
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 600px) {
+    .header-contact {
+      max-width: 100%;
+      padding: 8px;
+    }
+    .contact-item {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mobile-title, .phone-title {
+      font-size: 12px;
+    }
+    .mobile-number, .phone-number {
+      font-size: 13px;
+    }
+  }
+</style>
+
+<div class="header-contact">
+  <div class="contact-item">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/mobile.png" alt="آیکون موبایل" class="contact-icon">
+    <span class="mobile-title">همراه:</span>
+    <span class="mobile-number"><span class="prefix-mobile">0912-</span>2700014</span>
+  </div>
+  <div class="separator"></div>
+  <div class="contact-item">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/phone.png" alt="آیکون تلفن" class="contact-icon">
+    <span class="phone-title">تلفن:</span>
+    <span class="phone-number"><span class="prefix-phone">021-</span>66673115</span>
+  </div>
+</div>

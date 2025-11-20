@@ -1,0 +1,204 @@
+<script>
+  // ✅ مسیر تصاویر با / نه \
+  const img1 = "https://irontehran.ir/wp-content/uploads/2025/11/1-1.webp";
+  const img2 = "https://irontehran.ir/wp-content/uploads/2025/11/2-1.webp";
+  const img3 = "https://irontehran.ir/wp-content/uploads/2025/11/3-1.webp";
+  const img4 = "https://irontehran.ir/wp-content/uploads/2025/11/4-1.webp";
+  const img5 = "https://irontehran.ir/wp-content/uploads/2025/11/5-1.webp";
+</script>
+
+<!-- شروع سوییچر دسته‌ها با هدر و تصویر -->
+<div class="pt-switcher">
+
+  <div class="pt-tabs">
+    <button class="pt-tab active" data-target="pt-1">لوله صنعتی</button>
+    <button class="pt-tab" data-target="pt-2">لوله گازی API</button>
+    <button class="pt-tab" data-target="pt-3">لوله شوفاژی</button>
+    <button class="pt-tab" data-target="pt-4">لوله گازی معمولی</button>
+    <button class="pt-tab" data-target="pt-5">لوله گازی</button>
+  </div>
+
+  <div class="pt-panels">
+    <!-- آیتم 1 -->
+    <div class="pt-panel active" id="pt-1">
+      <div class="pt-header">
+        <div class="pt-text">
+          <div class="pt-small">قیمت روز</div>
+          <div class="pt-title">لوله صنعتی</div>
+        </div>
+      </div>
+      <div class="pt-image-wrap">
+        <img id="img-1" alt="لوله صنعتی">
+      </div>
+    </div>
+
+    <!-- آیتم 2 -->
+    <div class="pt-panel" id="pt-2">
+      <div class="pt-header">
+        <div class="pt-text">
+          <div class="pt-small">قیمت روز</div>
+          <div class="pt-title">لوله گازی API</div>
+        </div>
+      </div>
+      <div class="pt-image-wrap">
+        <img id="img-2" alt="لوله گازی API">
+      </div>
+    </div>
+
+    <!-- آیتم 3 -->
+    <div class="pt-panel" id="pt-3">
+      <div class="pt-header">
+        <div class="pt-text">
+          <div class="pt-small">قیمت روز</div>
+          <div class="pt-title">لوله شوفاژی</div>
+        </div>
+      </div>
+      <div class="pt-image-wrap">
+        <img id="img-3" alt="لوله شوفاژی">
+      </div>
+    </div>
+
+    <!-- آیتم 4 -->
+    <div class="pt-panel" id="pt-4">
+      <div class="pt-header">
+        <div class="pt-text">
+          <div class="pt-small">قیمت روز</div>
+          <div class="pt-title">لوله گازی معمولی</div>
+        </div>
+      </div>
+      <div class="pt-image-wrap">
+        <img id="img-4" alt="لوله گازی معمولی">
+      </div>
+    </div>
+
+    <!-- آیتم 5 -->
+    <div class="pt-panel" id="pt-5">
+      <div class="pt-header">
+        <div class="pt-text">
+          <div class="pt-small">قیمت روز</div>
+          <div class="pt-title">لوله گازی</div>
+        </div>
+      </div>
+      <div class="pt-image-wrap">
+        <img id="img-5" alt="لوله گازی">
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- پایان سوییچر -->
+
+<style>
+  .pt-switcher {
+    direction: rtl;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: sans-serif;
+    text-align: center; /* ✅ کل محتوا وسط‌چین */
+  }
+
+  .pt-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    justify-content: center; /* ✅ تب‌ها وسط‌چین */
+  }
+
+  .pt-tab {
+    border: none;
+    background: #f4f4f4;
+    border-radius: 10px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .pt-tab.active {
+    background: #f5b901;
+    color: #000;
+  }
+
+  .pt-panels {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ✅ پنل‌ها وسط‌چین */
+    width: 100%;
+  }
+
+  .pt-panel {
+    display: none;
+    width: 100%;
+    max-width: 800px; /* ✅ محدودیت عرض برای زیبایی */
+  }
+
+  .pt-panel.active {
+    display: block;
+  }
+
+  .pt-header {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 14px 18px 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center; /* ✅ متن هدر وسط */
+  }
+
+  .pt-small {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 2px;
+  }
+
+  .pt-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .pt-image-wrap {
+    margin-top: 10px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .pt-image-wrap img {
+    width: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  // ✅ وقتی صفحه لود میشه، آدرس عکس‌ها رو روی تگ‌های img می‌ذاریم
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("img-1").src = img1;
+    document.getElementById("img-2").src = img2;
+    document.getElementById("img-3").src = img3;
+    document.getElementById("img-4").src = img4;
+    document.getElementById("img-5").src = img5;
+  });
+
+  // ✅ سوییچ تب‌ها
+  (function() {
+    const tabs = document.querySelectorAll('.pt-tab');
+    const panels = document.querySelectorAll('.pt-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const target = tab.getAttribute('data-target');
+        panels.forEach(p => {
+          p.classList.remove('active');
+          if (p.id === target) p.classList.add('active');
+        });
+      });
+    });
+  })();
+</script>

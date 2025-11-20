@@ -1,0 +1,165 @@
+<!-- شبکه‌های اجتماعی -->
+<div style="margin-top: 30px; text-align:center;">
+
+    <h3 style="
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-weight:700;
+        color:#222;
+    ">شبکه‌های اجتماعی</h3>
+
+    <div style="
+        width: 70px;
+        height: 3px;
+        background: linear-gradient(90deg, #ffc107, #ff8f00);
+        border-radius: 999px;
+        margin: 0 auto 22px;
+    "></div>
+
+    <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:28px;
+        flex-wrap:wrap;
+    ">
+
+        <style>
+            .soc-btn {
+                width:60px;
+                height:60px;
+                border-radius:50%;
+                background:#ffffff;
+                border:1px solid #e5e7eb;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                text-decoration:none;
+                box-shadow:0 8px 18px rgba(0,0,0,0.10);
+                transition:0.3s;
+                position:relative;
+                overflow:visible;
+            }
+
+            /* افکت لوکس: بالا آمدن + بزرگ شدن + هاله طلایی */
+            .soc-btn:hover {
+                transform:translateY(-6px) scale(1.10);
+                box-shadow:
+                    0 14px 34px rgba(0,0,0,0.25),
+                    0 0 18px rgba(255,193,7,0.90),
+                    0 0 28px rgba(255,143,0,0.65);
+            }
+
+            .soc-title-fa {
+                font-size:13px;
+                color:#444;
+                margin-bottom:5px;
+                opacity:1;
+                transition:0.3s;
+            }
+
+            .soc-title-en {
+                font-size:12px;
+                color:#555;
+                position:absolute;
+                bottom:-22px;
+                opacity:0;
+                transition:0.3s;
+                white-space:nowrap;
+            }
+
+            .soc-wrapper:hover .soc-title-fa {
+                opacity:0;
+            }
+            .soc-wrapper:hover .soc-title-en {
+                opacity:1;
+            }
+        </style>
+
+
+        <!-- اینستاگرام -->
+        <div class="soc-wrapper" style="text-align:center; position:relative;">
+            <div class="soc-title-fa">اینستاگرام</div>
+
+            <a href="#" class="soc-btn" target="_blank">
+                <svg width="28" height="28" viewBox="0 0 24 24">
+                    <defs>
+                        <linearGradient id="igG" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f58529"/>
+                            <stop offset="30%" stop-color="#dd2a7b"/>
+                            <stop offset="60%" stop-color="#8134af"/>
+                            <stop offset="100%" stop-color="#515bd4"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#igG)" d="M7 2C4.243 2 2 4.243 2 7v10c0 
+                    2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm13 
+                    5.5a1.5 1.5 0 11-3.001-.001A1.5 1.5 0 0120 7.5zM12 
+                    7a5 5 0 110 10 5 5 0 010-10z"/>
+                </svg>
+
+                <div class="soc-title-en">Instagram</div>
+            </a>
+        </div>
+
+
+        <!-- واتساپ -->
+        <div class="soc-wrapper" style="text-align:center; position:relative;">
+            <div class="soc-title-fa">واتساپ</div>
+
+            <a href="#" class="soc-btn" target="_blank">
+                <svg width="28" height="28" fill="#27ae60" viewBox="0 0 24 24">
+                    <path d="M12 2C6.486 2 2 6.486 2 12c0 
+                    2.037.612 3.932 1.662 5.518L2 22l4.662-1.662A9.94 
+                    9.94 0 0012 22c5.514 0 10-4.486 10-10S17.514 2 
+                    12 2zm5.07 14.53c-.208.586-1.228 
+                    1.164-1.71 1.229-.442.058-1.007.083-1.625-.101-.375-.117-.858-.28-1.475-.548-2.6-1.126-4.3-3.73-4.43-3.91-.125-.17-1.06-1.41-1.06-2.693 
+                    0-1.283.67-1.911.908-2.178.238-.266.52-.333.69-.333.17 
+                    0 .345.002.497.009.16.008.373-.06.583.444.208.5.706 
+                    1.732.768 1.859.06.125.1.272.02.44-.083.17-.125.272-.25.42-.125.142-.263.318-.375.428-.125.125-.255.263-.11.517.146.25.652 
+                    1.074 1.4 1.74.962.857 1.77 1.125 2.02 
+                    1.25.25.125.395.104.54-.063.146-.17.625-.727.79-.978.17-.25.333-.208.563-.125.238.083 
+                    1.507.711 1.763.84.258.13.43.208.49.325.062.116.062.682-.146 
+                    1.268z"/>
+                </svg>
+
+                <div class="soc-title-en">WhatsApp</div>
+            </a>
+        </div>
+
+
+        <!-- تلگرام -->
+        <div class="soc-wrapper" style="text-align:center; position:relative;">
+            <div class="soc-title-fa">تلگرام</div>
+
+            <a href="#" class="soc-btn" target="_blank">
+                <svg width="28" height="28" fill="#0088cc" viewBox="0 0 24 24">
+                    <path d="M9.78 14.83l-.39 5.13c.56 0 .8-.24 
+                    1.09-.53l2.62-2.5 5.43 3.97c1 .56 1.71.27 
+                    1.96-.93l3.54-16.69c.32-1.53-.55-2.12-1.53-1.75L1.84 
+                    9.44c-1.5.58-1.48 1.41-.27 1.78l5.43 1.69L18.7 5.4c.58-.36 
+                    1.12-.16.68.22"/>
+                </svg>
+
+                <div class="soc-title-en">Telegram</div>
+            </a>
+        </div>
+
+
+        <!-- ایتا -->
+        <div class="soc-wrapper" style="text-align:center; position:relative;">
+            <div class="soc-title-fa">ایتا</div>
+
+            <a href="#" class="soc-btn" target="_blank">
+                <svg width="28" height="28" viewBox="0 0 500 500">
+                    <rect width="500" height="500" rx="110" fill="#f6871f"/>
+                    <path fill="#fff" d="M310.1,150.4c-21.1-23.7-51-36.8-83-36.8c-62.7,0-113.7,51-113.7,113.7
+                    c0,37.1,18.2,71.5,48.8,92.8c-0.2,12.2-2.2,37.5-19.4,73.8c0,0,56.7-12.1,90-51.5c59.8,9.7,115.4-32,125.1-91.9
+                    C366.8,208,348.7,172.1,310.1,150.4z"/>
+                </svg>
+
+                <div class="soc-title-en">Eitaa</div>
+            </a>
+        </div>
+
+    </div>
+</div>

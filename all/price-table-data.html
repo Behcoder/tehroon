@@ -1,0 +1,279 @@
+<div class="price-widget">
+
+  <!-- تب‌های بالا -->
+  <div class="pw-tabs">
+    <button class="pw-tab active" data-target="rebar">میلگرد</button>
+    <button class="pw-tab" data-target="beam">تیرآهن</button>
+    <button class="pw-tab" data-target="angle">نبشی</button>
+    <button class="pw-tab" data-target="pipe">لوله مانیسمان</button>
+  </div>
+
+  <!-- بدنه جداول -->
+  <div class="pw-tables">
+
+    <!-- جدول میلگرد -->
+    <div class="pw-table-wrap active" id="rebar">
+      <table class="pw-table">
+        <thead>
+          <tr>
+            <th>عنوان محصول</th>
+            <th>کارخانه</th>
+            <th>سایز</th>
+            <th>تاریخ بروز رسانی</th>
+            <th>قیمت</th>
+            <th>خرید</th>
+            <th>نمودار</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>میلگرد آجدار A3</td>
+            <td>ذوب آهن</td>
+            <td>16</td>
+            <td>1403/09/15</td>
+            <td>68,500,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+          <tr>
+            <td>میلگرد آجدار A3</td>
+            <td>میانه</td>
+            <td>14</td>
+            <td>1403/09/15</td>
+            <td>66,900,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+          <tr>
+            <td>میلگرد ساده</td>
+            <td>فولاد غرب</td>
+            <td>12</td>
+            <td>1403/09/14</td>
+            <td>64,200,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- جدول تیرآهن -->
+    <div class="pw-table-wrap" id="beam">
+      <table class="pw-table">
+        <thead>
+          <tr>
+            <th>عنوان محصول</th>
+            <th>کارخانه</th>
+            <th>سایز</th>
+            <th>تاریخ بروز رسانی</th>
+            <th>قیمت</th>
+            <th>خرید</th>
+            <th>نمودار</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تیرآهن IPE</td>
+            <td>ذوب آهن</td>
+            <td>18</td>
+            <td>1403/09/15</td>
+            <td>76,400,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+          <tr>
+            <td>تیرآهن IPE</td>
+            <td>فایکو</td>
+            <td>20</td>
+            <td>1403/09/15</td>
+            <td>81,200,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- جدول نبشی -->
+    <div class="pw-table-wrap" id="angle">
+      <table class="pw-table">
+        <thead>
+          <tr>
+            <th>عنوان محصول</th>
+            <th>کارخانه</th>
+            <th>سایز</th>
+            <th>تاریخ بروز رسانی</th>
+            <th>قیمت</th>
+            <th>خرید</th>
+            <th>نمودار</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>نبشی 40×40</td>
+            <td>اسپادانا</td>
+            <td>6</td>
+            <td>1403/09/14</td>
+            <td>43,000,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+          <tr>
+            <td>نبشی 50×50</td>
+            <td>ذوب آهن</td>
+            <td>6</td>
+            <td>1403/09/13</td>
+            <td>48,700,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- جدول لوله مانیسمان -->
+    <div class="pw-table-wrap" id="pipe">
+      <table class="pw-table">
+        <thead>
+          <tr>
+            <th>عنوان محصول</th>
+            <th>کارخانه</th>
+            <th>سایز</th>
+            <th>تاریخ بروز رسانی</th>
+            <th>قیمت</th>
+            <th>خرید</th>
+            <th>نمودار</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>لوله مانیسمان رده 40</td>
+            <td>اهواز</td>
+            <td>2 اینچ</td>
+            <td>1403/09/15</td>
+            <td>112,000,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+          <tr>
+            <td>لوله مانیسمان رده 80</td>
+            <td>چین</td>
+            <td>1 اینچ</td>
+            <td>1403/09/15</td>
+            <td>129,500,000</td>
+            <td>🛒</td>
+            <td>📈</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .price-widget {
+    direction: rtl;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    font-family: sans-serif;
+  }
+
+  .pw-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 16px 16px 0 16px;
+  }
+
+  .pw-tab {
+    background: #f1f1f1;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+  }
+
+  .pw-tab.active {
+    background: #f5b901;
+    color: #000;
+  }
+
+  .pw-tables {
+    margin-top: 16px;
+  }
+
+  .pw-table-wrap {
+    display: none;
+    overflow-x: auto;
+  }
+
+  .pw-table-wrap.active {
+    display: block;
+  }
+
+  .pw-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+
+  .pw-table thead {
+    background: #f6f6f6;
+  }
+
+  .pw-table th,
+  .pw-table td {
+    padding: 12px 10px;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .pw-table tbody tr {
+    transition: background 0.15s;
+  }
+
+  /* هاور روی هر سطر */
+  .pw-table tbody tr:hover {
+    background: #f5b901;
+  }
+
+  /* اسکرول در موبایل */
+  .pw-table-wrap::-webkit-scrollbar {
+    height: 6px;
+  }
+  .pw-table-wrap::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 10px;
+  }
+</style>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.pw-tab');
+    const tables = document.querySelectorAll('.pw-table-wrap');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // فعال کردن تب
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // نمایش جدول مربوطه
+        const target = tab.getAttribute('data-target');
+        tables.forEach(tbl => {
+          if (tbl.id === target) {
+            tbl.classList.add('active');
+          } else {
+            tbl.classList.remove('active');
+          }
+        });
+      });
+    });
+  })();
+</script>

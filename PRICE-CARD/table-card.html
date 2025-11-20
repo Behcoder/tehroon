@@ -1,0 +1,195 @@
+ <!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>سوییچر کارت‌های محصول</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      background: #f9f9f9;
+      direction: rtl;
+      text-align: center;
+    }
+
+    .cards-grid {
+      display: flex;
+      flex-wrap: nowrap;       /* همه کارت‌ها در یک خط */
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      overflow-x: auto;        /* اگر جا نشد اسکرول افقی */
+    }
+
+    .product-card {
+      width: 140px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: background 0.3s, color 0.3s;
+      padding: 10px;
+      text-align: center;      /* نوشته‌ها وسط‌چین */
+    }
+
+    /* حالت هاور و فعال یکسان */
+    .product-card:hover,
+    .product-card.active {
+      background: #f5b901;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover img,
+    .product-card.active img {
+      transform: scale(1.05);
+    }
+
+    .product-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 6px 0;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    .product-card:hover h3,
+    .product-card.active h3 {
+      color: #fff;
+    }
+
+    .pt-panel {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .pt-panel.active {
+      display: block;
+    }
+
+    .pt-header {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pt-small {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .pt-image-wrap img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  // مسیر تصاویر
+  const img1 = "https://irontehran.ir/wp-content/uploads/2025/11/1-1.webp";
+  const img2 = "https://irontehran.ir/wp-content/uploads/2025/11/2-1.webp";
+  const img3 = "https://irontehran.ir/wp-content/uploads/2025/11/3-1.webp";
+  const img4 = "https://irontehran.ir/wp-content/uploads/2025/11/4-1.webp";
+  const img5 = "https://irontehran.ir/wp-content/uploads/2025/11/5-1.webp";
+  const img6 = "https://irontehran.ir/wp-content/uploads/2025/11/6-1.webp";
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("panel-img-1").src = img1;
+    document.getElementById("panel-img-2").src = img2;
+    document.getElementById("panel-img-3").src = img3;
+    document.getElementById("panel-img-4").src = img4;
+    document.getElementById("panel-img-5").src = img5;
+    document.getElementById("panel-img-6").src = img6;
+  });
+
+  function showPanel(id, cardElement) {
+    // پنل‌ها
+    const panels = document.querySelectorAll('.pt-panel');
+    panels.forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    // کارت‌ها
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(c => c.classList.remove('active'));
+    cardElement.classList.add('active');
+  }
+</script>
+
+<!-- کارت‌ها -->
+<div class="cards-grid">
+  <div class="product-card active" onclick="showPanel('pt-1', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/black-pipe.png" alt="لوله صنعتی">
+    <h3>لوله صنعتی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-2', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/steel-pipe-folad-market.png" alt="لوله گازی API">
+    <h3>لوله گازی API</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-3', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2024/07/Group-17910.png" alt="لوله شوفاژی">
+    <h3>لوله شوفاژی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-4', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/steel-pipe-folad-market.png" alt="لوله گازی معمولی">
+    <h3>لوله گازی معمولی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-5', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2024/07/Group-17910.png" alt="لوله گازی">
+    <h3>لوله گازی</h3>
+  </div>
+  <div class="product-card" onclick="showPanel('pt-6', this)">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/black-pipe.png" alt="محصولات جدید">
+    <h3>به زودی</h3>
+  </div>
+</div>
+
+<!-- پنل‌ها -->
+<div class="pt-panel active" id="pt-1">
+  <!-- <div class="pt-header">
+    م<div class="pt-small">قیمت روز</div>
+  </div> -->
+  <div class="pt-image-wrap"><img id="panel-img-1" alt="لوله صنعتی"></div>
+</div>
+
+<div class="pt-panel" id="pt-2">
+
+  <div class="pt-image-wrap"><img id="panel-img-2" alt="لوله گازی API"></div>
+</div>
+
+<div class="pt-panel" id="pt-3">
+
+  <div class="pt-image-wrap"><img id="panel-img-3" alt="لوله شوفاژی"></div>
+</div>
+
+<div class="pt-panel" id="pt-4">
+
+  <div class="pt-image-wrap"><img id="panel-img-4" alt="لوله گازی معمولی"></div>
+</div>
+
+<div class="pt-panel" id="pt-5">
+
+  <div class="pt-image-wrap"><img id="panel-img-5" alt="لوله گازی"></div>
+</div>
+
+<div class="pt-panel" id="pt-6">
+
+  <div class="pt-image-wrap"><img id="panel-img-6" alt="محصولات جدید"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<style>
+  .header-contact {
+    display: flex;
+    flex-direction: column; /* موبایل و تلفن زیر هم */
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 0;
+    font-family: sans-serif;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center; /* آیکون و متن در یک ردیف */
+    gap: 8px;
+    transition: all 0.3s ease;
+    padding: 4px 0;
+  }
+
+  .contact-icon {
+    width: 24px;   /* ✅ سایز آیکون قابل تغییر */
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  /* رنگ عنوان‌ها */
+  .mobile-title {
+    font-size: 13px;
+    color: #666;
+  }
+
+  .phone-title {
+    font-size: 13px;
+    color: #444;
+  }
+
+ 
+  .mobile-number {
+    font-size: 14px;
+    font-weight: bold;
+    color: red; 
+  }
+
+  .phone-number {
+    font-size: 14px;
+    font-weight: bold;
+    color: red; 
+  }
+
+  .prefix-mobile {
+    color: rgb(76, 76, 85); 
+    font-weight: bold;
+  }
+
+  .prefix-phone {
+    color: rgb(76, 76, 85); 
+    font-weight: bold;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc; 
+  }
+
+  .contact-item:hover .contact-icon {
+    transform: scale(1.);
+  }
+
+  .contact-item:hover .mobile-number {
+    color: darkred;
+  }
+
+  .contact-item:hover .phone-number {
+    color: darkblue;
+  }
+
+  .contact-item:hover {
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+  }
+  
+</style>
+
+<!-- بخش اطلاعات تماس در هدر -->
+<div class="header-contact">
+  <div class="contact-item">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/mobile.png" alt="آیکون موبایل" class="contact-icon">
+    <span class="mobile-title">همراه:</span>
+    <span class="mobile-number"><span class="prefix-mobile">0912-</span>700014</span>
+  </div>
+  <div class="separator"></div>
+  <div class="contact-item">
+    <img src="https://irontehran.ir/wp-content/uploads/2025/11/phone.png" alt="آیکون تلفن" class="contact-icon">
+    <span class="phone-title">تلفن:</span>
+    <span class="phone-number"><span class="prefix-phone">021-</span>66677315</span>
+  </div>
+</div>
